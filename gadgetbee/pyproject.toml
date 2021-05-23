@@ -1,0 +1,49 @@
+[tool.briefcase]
+project_name = "Gadgetbee"
+bundle = "net.telent"
+version = "0.0.1"
+url = "https://telent.net/gadgetbee"
+license = "BSD license"
+author = 'Daniel Barlow'
+author_email = "dan@telent.net"
+
+[tool.briefcase.app.gadgetbee]
+formal_name = "Gadgetbee"
+description = "My first application"
+icon = "src/gadgetbee/resources/gadgetbee"
+sources = ['src/gadgetbee']
+requires = []
+
+
+[tool.briefcase.app.gadgetbee.macOS]
+requires = [
+    'toga-cocoa>=0.3.0.dev20',
+]
+
+[tool.briefcase.app.gadgetbee.linux]
+requires = [
+    'toga-gtk>=0.3.0.dev20',
+]
+system_requires = [
+    'libgirepository1.0-dev',
+    'libcairo2-dev',
+    'libpango1.0-dev',
+    'libwebkitgtk-3.0-0',
+    'gir1.2-webkit-3.0',
+]
+
+[tool.briefcase.app.gadgetbee.windows]
+requires = [
+    'toga-winforms>=0.3.0.dev20',
+]
+
+# Mobile deployments
+[tool.briefcase.app.gadgetbee.iOS]
+requires = [
+    'toga-iOS>=0.3.0.dev20',
+]
+
+[tool.briefcase.app.gadgetbee.android]
+requires = [
+    'toga-android>=0.3.0.dev20',
+]
