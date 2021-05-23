@@ -12,8 +12,9 @@ LocationListener = JavaInterface("android/location/LocationListener")
 
 
 class LocListener(LocationListener):
-    def __init__(self):
+    def __init__(self, locationHolder):
         super().__init__()
+        self.locationHolder = locationHolder
         self._methods["hashCode"] = {tuple()}
 
     def onFlushComplete(self, code):
@@ -28,20 +29,18 @@ class LocListener(LocationListener):
         print(f"{provider} enabled")
         return 0
 
-    def onStatusChanged(self, status, extras, mystery):
-        print(f"status {status} {extras} {mystery}")
+    def onStatusChanged(self, provider, status, extrasy):
+        print(f"{provider} status {status} extras {extras} ")
         return 0
 
     def onLocationChanged(self, location):
         print(f"location {location}")
         if location is not None:
-            # self.locationHolder.latitude = location.getLatitude()
-            # self.locationHolder.longitude = location.getLongitude()
+            self.locationHolder.location = location
             print(location)
         return 0
 
     def hashCode(self):
-        print("hash")
         return 1
 
 
@@ -67,9 +66,7 @@ class Gadgetbee(toga.App):
     def pollLocation(self):
         location = self.locationManager.getLastKnownLocation(self.LocationManager.GPS_PROVIDER)
         if location is not None:
-            self.latitude = location.getLatitude()
-            self.longitude = location.getLongitude()
-            print(location)
+            self.location = location
 
     def startLocationReporting(self, context):
         global loclistener
@@ -79,7 +76,7 @@ class Gadgetbee(toga.App):
         t = context.getSystemService(loc_service)
         # NewGlobalRef used here to cast the Object to a LocationManager
         self.locationManager = self.LocationManager(__jni__=java.NewGlobalRef(t))
-        self.locListener = LocListener()
+        self.locListener = LocListener(self)
         self.pollLocation()
 
         self.locationManager.requestLocationUpdates(self.LocationManager.GPS_PROVIDER,
